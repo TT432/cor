@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+}
+
+group 'io.github.tt432'
+version '1.1'
+
+apply from: './publish.gradle'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/com.google.auto.service/auto-service
+    implementation 'com.google.auto.service:auto-service:1.0.1'
+    // https://mvnrepository.com/artifact/com.google.auto.service/auto-service-annotations
+    implementation 'com.google.auto.service:auto-service-annotations:1.0.1'
+}
+
+compileJava {
+    options.compilerArgs << "--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED"
+            << "--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED"
+            << "--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED"
+            << "--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED"
+            << "--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED"
+            << "--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED"
+            << "--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED"
+            << "--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED"
+            << "--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED"
+            << "--add-exports=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED"
+}
+
+publishing {
+    publications {
+        normal(MavenPublication) {
+            artifactId = archivesBaseName
+
+            from components.java
+            pom {
+                name = 'Caestus Plugin'
+                description = 'This is a plugin by TT432.'
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
